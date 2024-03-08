@@ -6,7 +6,7 @@ import type {API} from '~/constants/api.const'
  * @param options Objet contenant les options useFetch
  */
 export function useFetchService<E>(path: API, options?: Object) {
-  const {...props} = options
+  const {...props} = options ?? {}
   const config = useRuntimeConfig()
   return useFetch<E>(path, {
     baseURL: config.public.NUXT_BASE_URL,
