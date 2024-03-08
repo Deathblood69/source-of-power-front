@@ -5,6 +5,6 @@ export interface PersonnageDto extends AbstractDto {
   nom: string
   prenom: string
   dateNaissance: string
-  maison: string
+  famille: string
   relations: RelationDto[]
 }

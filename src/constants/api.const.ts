@@ -4,5 +4,5 @@ export enum API {
   refreshLogin = 'api/auth/login/refresh',
   user = 'api/user',
   roles = 'api/role',
-  maison = 'api/maison',
+  famille = 'api/famille',
 }

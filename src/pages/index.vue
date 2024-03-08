@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  import AfficherMaisons from '~/domains/maison/AfficherMaisons.vue'
+  import AfficherFamilles from '~/domains/famille/AfficherFamilles.vue'
   /**  PROPS  **/
 
   /**  EMITS  **/
@@ -14,5 +14,5 @@
 </script>
 
 <template>
-  <AfficherMaisons />
+  <AfficherFamilles />
 </template>
