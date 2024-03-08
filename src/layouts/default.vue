@@ -3,7 +3,8 @@
   import type {ToolbarButton} from '~/types/toolbarButton'
   import {MENU_ITEMS} from '~/constants/menuItems.const'
   import AppFooter from '~/components/AppFooter.vue'
-  import {APP_CONFIG} from '~/app.config'
+
+  const config = useRuntimeConfig()
 
   const router = useRouter()
   const route = useRoute()
@@ -57,7 +58,7 @@
       <AppBar
         class="bg-primary"
         :items="actions"
-        :titre="APP_CONFIG.titre"
+        :titre="config.public['NOM']"
         @menu="handleMenu"
       />
       <VNavigationDrawer :model-value="openMenu">
@@ -70,7 +71,7 @@
         <slot />
       </VMain>
       <AppFooter
-        :author="APP_CONFIG.auteur"
+        :author="config.public['AUTHOR'] as string"
         class="flex-shrink-0 d-flex justify-center"
         style="flex: 0"
       />

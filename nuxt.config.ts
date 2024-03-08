@@ -1,5 +1,4 @@
 import vuetify, {transformAssetUrls} from 'vite-plugin-vuetify'
-import {APP_CONFIG} from '~/app.config'
 
 export default defineNuxtConfig({
   build: {
@@ -24,8 +23,8 @@ export default defineNuxtConfig({
     public: {
       API_BASE: process.env.API_BASE,
       NUXT_BASE_URL: process.env.NUXT_BASE_URL,
-      AUTHOR: APP_CONFIG.auteur,
-      NOM: APP_CONFIG.titre,
+      AUTHOR: 'Romain DIASPARRA',
+      NOM: 'Source Of Power',
     },
   },
   srcDir: 'src/',

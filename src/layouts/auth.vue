@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  import {APP_CONFIG} from '~/app.config'
+  const config = useRuntimeConfig()
 
   const themeStore = useThemeStore()
 
@@ -15,7 +15,7 @@
         <slot />
       </VMain>
       <AppFooter
-        :author="APP_CONFIG.auteur"
+        :author="config.public['AUTHOR'] as string"
         class="flex-shrink-0 d-flex justify-center"
         style="flex: 0"
       />

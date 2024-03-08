@@ -4,7 +4,8 @@
   import {getDefaultProfils} from '~/utils/getDefaultProfils'
   import FormCredentials from '~/domains/auth/FormCredentials.vue'
   import AuthLoginBtn from '~/domains/auth/AuthLoginBtn.vue'
-  import {APP_CONFIG} from '~/app.config'
+
+  const config = useRuntimeConfig()
 
   const router = useRouter()
 
@@ -29,7 +30,7 @@
   <AppForm
     :closable="false"
     :loading="loadingForm"
-    :title="APP_CONFIG.titre"
+    :title="config.public['NOM']"
     width="30%"
     @validate="handleConnect"
   >
