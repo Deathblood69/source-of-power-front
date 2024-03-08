@@ -1,6 +1,6 @@
-import type {AbstractDto} from '~/domains/AbstractDto'
+import type {AbstractDTO} from '~/domains/dto.abstract'
 
-export interface UserDTO extends AbstractDto {
+export interface UserDTO extends AbstractDTO {
   lastName: string
   firstName: string
   username: string

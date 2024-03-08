@@ -3,7 +3,7 @@
   import type {FamilleDto} from '~/domains/famille/dto/famille.dto'
   import type {PaginedQuery} from '~/types/paginedQuery'
   import FamilyTree from '@balkangraph/familytree.js'
-  import type {MembreFamille} from '~/domains/famille/entities/membreFamille'
+  import {MembreFamille} from '~/domains/relation/dto/membreFamille'
   import {TypeRelation} from '~/domains/relation/enum/typeRelation.enum'
   import {Genre} from '~/domains/personnage/enum/genre.enum'
 
@@ -26,16 +26,11 @@
   /**  COMPUTED   **/
 
   const personnages = computed(() => {
+    console.log(response.value?.data)
     return response.value?.data
-      .flatMap((e) => e.personnages)
+      .flatMap((e) => e.membres)
       .map((personnage) => {
-        const membreFamille: MembreFamille = {
-          ...personnage,
-          pids: [],
-          fid: '',
-          mid: '',
-          divorced: [],
-        }
+        const membreFamille = new MembreFamille(personnage, [], '', '', [])
         personnage.relations.forEach((relation) => {
           const {id, genre} = relation.relatedPersonnage
           switch (relation.type) {

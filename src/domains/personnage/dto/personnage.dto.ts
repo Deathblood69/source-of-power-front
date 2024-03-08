@@ -1,8 +1,8 @@
 import type {RelationDto} from '~/domains/relation/dto/relation.dto'
-import type {AbstractDto} from '~/domains/AbstractDto'
-import {Genre} from "~/domains/personnage/enum/genre.enum";
+import type {AbstractDTO} from '~/domains/dto.abstract'
+import {Genre} from '~/domains/personnage/enum/genre.enum'
 
-export interface PersonnageDto extends AbstractDto {
+export interface PersonnageDto extends AbstractDTO {
   nom: string
   prenom: string
   dateNaissance: string
