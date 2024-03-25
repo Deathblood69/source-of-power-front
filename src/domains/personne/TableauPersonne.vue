@@ -4,8 +4,8 @@
   import type {FamilleDto} from '~/domains/famille/dto/famille.dto'
   import {API} from '~/constants/api.const'
   import type {ReadonlyHeaders} from '~/types/headers'
-  import ModifierFamille from '~/domains/famille/FormulaireFamille.vue'
-  import SupprimerFamille from '~/domains/famille/SupprimerFamille.vue'
+  import FormulairePersonne from '~/domains/personne/FormulairePersonne.vue'
+  import SupprimerPersonne from '~/domains/personne/SupprimerPersonne.vue'
   import {DEFAUT_FAMILLE} from '~/domains/famille/constants/defautFamille.const'
 
   const {
@@ -13,7 +13,7 @@
     pending,
     refresh,
     execute,
-  } = useFetchService<PaginedQuery<FamilleDto>>(API.famille)
+  } = useFetchService<PaginedQuery<FamilleDto>>(API.personne)
 
   /**  EMITS  **/
 
@@ -97,13 +97,13 @@
         />
       </template>
     </AppDataTable>
-    <ModifierFamille
+    <FormulairePersonne
       v-if="openFormulaire && famille"
       v-model="openFormulaire"
       :famille="famille"
       @validate="handleValidate"
     />
-    <SupprimerFamille
+    <SupprimerPersonne
       v-if="openSupprimer && famille"
       v-model="openSupprimer"
       :famille="famille"

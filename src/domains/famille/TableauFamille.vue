@@ -4,7 +4,7 @@
   import type {FamilleDto} from '~/domains/famille/dto/famille.dto'
   import {API} from '~/constants/api.const'
   import type {ReadonlyHeaders} from '~/types/headers'
-  import ModifierFamille from '~/domains/famille/FormulaireFamille.vue'
+  import FormulaireFamille from '~/domains/famille/FormulaireFamille.vue'
   import SupprimerFamille from '~/domains/famille/SupprimerFamille.vue'
   import {DEFAUT_FAMILLE} from '~/domains/famille/constants/defautFamille.const'
 
@@ -97,7 +97,7 @@
         />
       </template>
     </AppDataTable>
-    <ModifierFamille
+    <FormulaireFamille
       v-if="openFormulaire && famille"
       v-model="openFormulaire"
       :famille="famille"

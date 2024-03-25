@@ -1,5 +1,7 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+  import TableauPersonne from '~/domains/personne/TableauPersonne.vue'
+</script>
 
 <template>
-  <div>Personne</div>
+  <TableauPersonne />
 </template>
