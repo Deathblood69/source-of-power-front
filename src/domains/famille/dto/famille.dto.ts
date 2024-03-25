@@ -1,7 +1,7 @@
-import type {PersonnageDto} from '~/domains/personnage/dto/personnage.dto'
+import type {PersonneDto} from '~/domains/personne/dto/personnage.dto'
 
 export interface FamilleDto {
   id?: string
   nom: string
-  membres: PersonnageDto[]
+  membres: PersonneDto[]
 }

@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-  import type {FamilleDto} from '~/domains/personne/dto/personne.dto'
   import {FORM_VALIDATIONS_RULES} from '~/constants/formValidationsRules.const'
+  import type {PersonneDto} from '~/domains/personne/dto/personnage.dto'
 
-  const form = defineModel<FamilleDto>({
+  const form = defineModel<PersonneDto>({
     required: true,
   })
 </script>

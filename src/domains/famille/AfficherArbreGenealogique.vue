@@ -5,7 +5,8 @@
   import FamilyTree from '@balkangraph/familytree.js'
   import {MembreFamille} from '~/domains/relation/dto/membreFamille'
   import {TypeRelation} from '~/domains/relation/enum/typeRelation.enum'
-  import {Genre} from '~/domains/personnage/enum/genre.enum'
+  import {Genre} from '~/domains/personne/enum/genre.enum'
+  import type {RelationDto} from '~/domains/relation/dto/relation.dto'
 
   /**  PROPS  **/
 
@@ -19,20 +20,20 @@
 
   /**  REFS  **/
 
-  const dialogPersonnage = ref<boolean>(false)
+  const dialogPersonne = ref<boolean>(false)
 
   const familyTreeRef = ref<FamilyTree>()
 
   /**  COMPUTED   **/
 
-  const personnages = computed(() => {
+  const personnes = computed(() => {
     console.log(response.value?.data)
     return response.value?.data
       .flatMap((e) => e.membres)
-      .map((personnage) => {
-        const membreFamille = new MembreFamille(personnage, [], '', '', [])
-        personnage.relations.forEach((relation) => {
-          const {id, genre} = relation.relatedPersonnage
+      .map((personne) => {
+        const membreFamille = new MembreFamille(personne, [], '', '', [])
+        personne.relations.forEach((relation: RelationDto) => {
+          const {id, genre} = relation.relatedPersonne
           switch (relation.type) {
             case TypeRelation.MARIAGE:
               membreFamille.pids.push(id)
@@ -72,15 +73,15 @@
     }
   })
 
-  watch([personnages, familyTreeRef], () => {
-    if (personnages.value && familyTreeRef.value) {
-      familyTreeRef.value?.load(personnages.value)
+  watch([personnes, familyTreeRef], () => {
+    if (personnes.value && familyTreeRef.value) {
+      familyTreeRef.value?.load(personnes.value)
     }
   })
 
   /**  METHODS  **/
   function toggleDialog() {
-    dialogPersonnage.value = !dialogPersonnage.value
+    dialogPersonne.value = !dialogPersonne.value
   }
 </script>
 

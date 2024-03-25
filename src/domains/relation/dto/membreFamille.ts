@@ -1,8 +1,8 @@
-import type {PersonnageDto} from '~/domains/personnage/dto/personnage.dto'
-import {type Genre} from '~/domains/personnage/enum/genre.enum'
+import {type Genre} from '~/domains/personne/enum/genre.enum'
 import type {RelationDto} from '~/domains/relation/dto/relation.dto'
+import type {PersonneDto} from '~/domains/personne/dto/personnage.dto'
 
-export class MembreFamille implements PersonnageDto {
+export class MembreFamille implements PersonneDto {
   id: string
   nom: string
   prenom: string
@@ -17,19 +17,19 @@ export class MembreFamille implements PersonnageDto {
   divorced: string[]
 
   constructor(
-    personnage: PersonnageDto,
+    personne: PersonneDto,
     pids: string[],
     mid: string,
     fid: string,
     divorced: string[],
   ) {
-    this.id = personnage.id
-    this.nom = personnage.nom
-    this.prenom = personnage.prenom
-    this.dateNaissance = personnage.dateNaissance
-    this.genre = personnage.genre
-    this.famille = personnage.famille
-    this.relations = personnage.relations
+    this.id = personne.id
+    this.nom = personne.nom
+    this.prenom = personne.prenom
+    this.dateNaissance = personne.dateNaissance
+    this.genre = personne.genre
+    this.famille = personne.famille
+    this.relations = personne.relations
     this.pids = pids
     this.mid = mid
     this.fid = fid
