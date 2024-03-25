@@ -1,5 +1,5 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div>Compte</div>
+  <div>Personne</div>
 </template>

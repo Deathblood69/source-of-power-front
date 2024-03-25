@@ -1,5 +1,7 @@
 export enum PATHS {
   accueil = '/',
   connexion = '/connexion',
-  famille = '/famille',
+  personne = '/personnes',
+  relation = '/relations',
+  famille = '/familles',
 }

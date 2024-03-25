@@ -8,13 +8,18 @@ export const MENU_ITEMS = ref<ListItem[]>([
     path: PATHS.accueil,
   },
   {
-    icon: 'mdi-family-tree',
-    libelle: 'Famille',
-    path: PATHS.famille,
+    icon: 'mdi-account',
+    libelle: 'Personnes',
+    path: PATHS.personne,
   },
   {
-    icon: 'mdi-account',
-    libelle: 'Compte',
-    path: '/compte',
+    icon: 'mdi-link-variant',
+    libelle: 'Relations',
+    path: PATHS.relation,
+  },
+  {
+    icon: 'mdi-human-male-female-child',
+    libelle: 'Familles',
+    path: PATHS.famille,
   },
 ])
