@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-  import AfficherFamilles from '~/domains/famille/AfficherArbreGenealogique.vue'
   /**  PROPS  **/
 
   /**  EMITS  **/
@@ -13,6 +12,4 @@
   /**  METHODS  **/
 </script>
 
-<template>
-  <AfficherFamilles />
-</template>
+<template>Accueil</template>

@@ -1,3 +1,3 @@
 export interface AbstractDTO {
-  id: string
+  id?: string
 }

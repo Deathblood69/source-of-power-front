@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import type {ReadonlyHeaders} from '~/types/headers'
+  import type {LoadItems} from '~/types/loadItems'
 
   /**  PROPS  **/
 
@@ -10,6 +11,8 @@
     itemsPerPage: number
     loading: boolean
     search?: string
+    page?: number
+    refresh?: (params: LoadItems) => void
   }
 
   const props = defineProps<Props>()
@@ -47,7 +50,9 @@
     :loading="loading"
     :items-per-page="itemsPerPage"
     :search="search"
+    :page="page"
     item-value="name"
+    @update:options="refresh"
   >
     <template #item.actions="{item}">
       <slot
@@ -57,5 +62,3 @@
     </template>
   </VDataTableServer>
 </template>
-
-<style scoped></style>

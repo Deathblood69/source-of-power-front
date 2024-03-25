@@ -1,13 +1,13 @@
 <script setup lang="ts">
-  import FormFamille from '~/domains/famille/FormFamille.vue'
-  import type {FamilleDto} from '~/domains/famille/dto/famille.dto'
   import {API} from '~/constants/api.const'
   import {METHODE_HTTP} from '~/constants/methodeHTTP.enum'
+  import type {PersonneDto} from '~/domains/personne/dto/personnage.dto'
+  import FormPersonne from '~/domains/personne/FormPersonne.vue'
 
   /**  PROPS  **/
 
   interface Props {
-    famille: FamilleDto
+    personne: PersonneDto
   }
 
   const props = defineProps<Props>()
@@ -33,11 +33,11 @@
   /**  COMPUTED   **/
 
   const modeUpdate = computed(() => {
-    return props.famille.id !== undefined
+    return Boolean(props.personne.id)
   })
 
   const titre = computed(() => {
-    return modeUpdate.value ? 'Modifier une famille' : 'Ajouter une famille'
+    return modeUpdate.value ? 'Modifier une personne' : 'Ajouter une personne'
   })
 
   const methode = computed(() => {
@@ -46,9 +46,9 @@
 
   /**  REQUETES   **/
 
-  const {error, refresh} = useFetchService<string>(API.famille, {
+  const {error, refresh} = useFetchService<string>(API.personne, {
     method: methode,
-    body: props.famille,
+    body: props.personne,
     immediate: false,
   })
 
@@ -68,11 +68,17 @@
     } else {
       const statusCode = error.value?.statusCode
       let message
+
       switch (statusCode) {
+        case 400:
+          message = 'La création a échouée'
+          break
         case 409:
-          message = "La famille n'existe pas"
+          message = "La personne n'existe pas"
+          break
       }
       errorMessage.value = message ?? ''
+      openError.value = true
     }
   }
 </script>
@@ -87,19 +93,17 @@
       @validate="handleValidate"
       @cancel="handleDialog"
     >
-      <FormFamille :model-value="famille" />
+      <FormPersonne :model-value="personne" />
       <VAlert
         v-if="errorMessage"
         v-model="openError"
         :closable="true"
         :text="errorMessage"
         density="default"
-        title="Erreur connexion"
+        title="Erreur"
         type="error"
         variant="outlined"
       />
     </AppForm>
   </AppDialog>
 </template>
-
-<style scoped></style>

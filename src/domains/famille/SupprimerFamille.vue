@@ -63,5 +63,3 @@
     </AppForm>
   </AppDialog>
 </template>
-
-<style scoped></style>

@@ -1,12 +1,12 @@
 <script setup lang="ts">
-  import type {FamilleDto} from '~/domains/famille/dto/famille.dto'
   import {API} from '~/constants/api.const'
   import {METHODE_HTTP} from '~/constants/methodeHTTP.enum'
+  import type {PersonneDto} from '~/domains/personne/dto/personnage.dto'
 
   /**  PROPS  **/
 
   interface Props {
-    famille: FamilleDto
+    personne: PersonneDto
   }
 
   const props = defineProps<Props>()
@@ -27,7 +27,7 @@
 
   /**  REQUETES   **/
 
-  const {refresh} = useFetchService(`${API.famille}/${props.famille.id}`, {
+  const {refresh} = useFetchService(`${API.personne}/${props.personne.id}`, {
     method: METHODE_HTTP.DELETE,
     immediate: false,
   })
@@ -59,9 +59,7 @@
       @validate="handleValidate"
       @cancel="handleDialog"
     >
-      {{ `Voulez vous supprimer la famille ${famille.nom}?` }}
+      {{ `Voulez vous supprimer la famille ${personne.nom}?` }}
     </AppForm>
   </AppDialog>
 </template>
-
-<style scoped></style>

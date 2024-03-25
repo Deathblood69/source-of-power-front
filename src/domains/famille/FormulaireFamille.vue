@@ -33,7 +33,7 @@
   /**  COMPUTED   **/
 
   const modeUpdate = computed(() => {
-    return props.famille.id !== undefined
+    return Boolean(props.famille.id)
   })
 
   const titre = computed(() => {
@@ -69,8 +69,12 @@
       const statusCode = error.value?.statusCode
       let message
       switch (statusCode) {
+        case 400:
+          message = 'La création a échouée'
+          break
         case 409:
           message = "La famille n'existe pas"
+          break
       }
       errorMessage.value = message ?? ''
     }
@@ -94,12 +98,10 @@
         :closable="true"
         :text="errorMessage"
         density="default"
-        title="Erreur connexion"
+        title="Erreur"
         type="error"
         variant="outlined"
       />
     </AppForm>
   </AppDialog>
 </template>
-
-<style scoped></style>
