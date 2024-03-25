@@ -12,6 +12,7 @@
     loading: boolean
     search?: string
     page?: number
+    error?: boolean
     refresh?: (params: LoadItems) => void
   }
 
@@ -37,6 +38,10 @@
     )
   })
 
+  const keys = computed(() => {
+    return tableHeaders.value?.map((header: {key: string}) => header.key) || []
+  })
+
   /**  LIFECYCLE  **/
 
   /**  METHODS  **/
@@ -54,11 +59,30 @@
     item-value="name"
     @update:options="refresh"
   >
-    <template #item.actions="{item}">
-      <slot
-        :item="item"
-        name="actions"
+    <template v-slot:no-data>
+      <VAlert
+        v-if="error"
+        variant="text"
+        type="error"
+        text="Erreur lors de la récupération des données."
       />
+      <VAlert
+        v-else
+        variant="text"
+        type="warning"
+        text="Aucune donnée."
+      />
+    </template>
+    <template
+      v-for="key in keys"
+      v-slot:[`item.${key}`]="props"
+    >
+      <slot
+        :name="key"
+        v-bind="props"
+      >
+        {{ props.value }}
+      </slot>
     </template>
   </VDataTableServer>
 </template>

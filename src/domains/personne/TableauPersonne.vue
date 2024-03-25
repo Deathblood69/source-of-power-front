@@ -53,9 +53,10 @@
 
   const {
     data: response,
+    error,
     pending,
     refresh,
-  } = useFetch<PaginedQuery<FamilleDto>>(API.personne, {
+  } = useFetchService<PaginedQuery<FamilleDto>>(API.personne, {
     method: METHODE_HTTP.GET,
     query: query,
     watch: [query],
@@ -122,6 +123,7 @@
       :headers="headers"
       :items="items"
       :total-items="totalItems"
+      :error="Boolean(error)"
       :loading="pending"
       :items-per-page="query.limit"
       :page="query.page"

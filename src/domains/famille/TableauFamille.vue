@@ -7,13 +7,25 @@
   import FormulaireFamille from '~/domains/famille/FormulaireFamille.vue'
   import SupprimerFamille from '~/domains/famille/SupprimerFamille.vue'
   import {DEFAUT_FAMILLE} from '~/domains/famille/constants/defautFamille.const'
+  import {METHODE_HTTP} from '~/constants/methodeHTTP.enum'
+  import type {LoadItems} from '~/types/loadItems'
+
+  const query = ref({
+    limit: 10,
+    page: 1,
+    sortBy: '',
+  })
 
   const {
     data: response,
+    error,
     pending,
     refresh,
-    execute,
-  } = useFetchService<PaginedQuery<FamilleDto>>(API.famille)
+  } = useFetchService<PaginedQuery<FamilleDto>>(API.famille, {
+    method: METHODE_HTTP.GET,
+    query: query,
+    watch: [query],
+  })
 
   /**  EMITS  **/
 
@@ -62,8 +74,23 @@
   }
 
   async function handleValidate() {
-    console.log('test')
-    execute()
+    await refresh()
+  }
+
+  function handleRefresh(params: LoadItems) {
+    // Met à jour la page
+    query.value.page = params.page
+
+    // Met à jour le nombre d'éléments par page
+    query.value.limit = params.itemsPerPage
+
+    // Met à jour le tri
+    if (params.sortBy.length > 0) {
+      const replacedSortBy = params?.sortBy[0]?.key?.replace(/\[\d+]/g, '')
+      query.value.sortBy = `${replacedSortBy}:${params.sortBy[0].order.toUpperCase()}`
+    } else {
+      query.value.sortBy = ''
+    }
   }
 </script>
 
@@ -83,8 +110,11 @@
       :headers="headers"
       :items="items"
       :total-items="totalItems"
+      :error="Boolean(error)"
       :loading="pending"
       :items-per-page="itemsPerPage"
+      :page="query.page"
+      :refresh="handleRefresh"
     >
       <template #actions="{item}">
         <VBtn
