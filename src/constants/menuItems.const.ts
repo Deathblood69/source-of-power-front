@@ -8,6 +8,11 @@ export const MENU_ITEMS = ref<ListItem[]>([
     path: PATHS.accueil,
   },
   {
+    icon: 'mdi-family-tree',
+    libelle: 'Famille',
+    path: PATHS.famille,
+  },
+  {
     icon: 'mdi-account',
     libelle: 'Compte',
     path: '/compte',

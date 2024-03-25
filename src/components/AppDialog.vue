@@ -1,9 +1,11 @@
 <script setup lang="ts">
   interface Props {
+    title?: string
     modelValue: boolean
   }
 
   const props = withDefaults(defineProps<Props>(), {
+    title: '',
     modelValue: false,
   })
 </script>
@@ -12,22 +14,12 @@
   <VDialog
     max-width="500"
     :model-value="modelValue"
+    :persistent="true"
   >
-    <template v-slot:default="{isActive}">
-      <VCard title="Dialog">
-        <VCardText>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        </VCardText>
-
-        <VCardActions>
-          <VSpacer />
-          <VBtn
-            text="Close Dialog"
-            @click="isActive.value = false"
-          ></VBtn>
-        </VCardActions>
-      </VCard>
-    </template>
+    <VCard :title="title">
+      <VCardText>
+        <slot />
+      </VCardText>
+    </VCard>
   </VDialog>
 </template>

@@ -5,7 +5,7 @@ import type {API} from '~/constants/api.const'
  * @param path Chemin vers l'api du backend
  * @param options Objet contenant les options useFetch
  */
-export function useFetchService<E>(path: API, options?: Object) {
+export function useFetchService<E>(path: API | string, options?: Object) {
   const {...props} = options ?? {}
   const config = useRuntimeConfig()
   return useFetch<E>(path, {

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
   /** PROPS **/
   interface Props {
-    title: string
+    title?: string
     subtitle?: string
     loading?: boolean
     closable?: boolean
@@ -11,6 +11,7 @@
   }
 
   withDefaults(defineProps<Props>(), {
+    title: '',
     loading: false,
     subtitle: '',
     closable: true,
@@ -46,55 +47,39 @@
 </script>
 
 <template>
-  <VCard
-    :loading="loading"
-    :subtitle="subtitle"
-    :title="title"
-    :aria-label="title"
-    :width="width"
+  <VForm
+    ref="form"
+    :disabled="loading || afterClickLoading"
+    @keydown.enter.capture.stop="handleValidate"
   >
-    <VBtn
-      v-if="closable"
-      aria-label="Close"
-      variant="plain"
-      icon="mdi-close"
-      class="ma-1 position-absolute"
-      @click="emit('cancel')"
-    />
-    <VCardText>
-      <VForm
-        ref="form"
-        :disabled="loading || afterClickLoading"
-        @keydown.enter.capture.stop="handleValidate"
-      >
-        <slot />
-      </VForm>
-    </VCardText>
-    <VCardActions class="pa-4">
-      <slot
-        name="actions"
-        :validate="handleValidate"
+    <slot />
+  </VForm>
+
+  <slot
+    name="actions"
+    :validate="handleValidate"
+    :loading="afterClickLoading"
+  >
+    <VContainer class="container">
+      <VBtn
         :loading="afterClickLoading"
-      >
-        <VBtn
-          :text="libelleAnnuler"
-          @click="emit('cancel')"
-        />
-        <VBtn
-          :loading="afterClickLoading"
-          variant="flat"
-          color="primary"
-          :text="libelleValider"
-          @click="handleValidate"
-        />
-      </slot>
-    </VCardActions>
-  </VCard>
+        variant="flat"
+        color="primary"
+        :text="libelleValider"
+        @click="handleValidate"
+      />
+      <VBtn
+        :text="libelleAnnuler"
+        @click="emit('cancel')"
+      />
+    </VContainer>
+  </slot>
 </template>
 
 <style scoped>
-  .position-absolute {
-    top: 0;
-    right: 0;
+  .container {
+    display: flex;
+    justify-content: center;
+    gap: 1em;
   }
 </style>

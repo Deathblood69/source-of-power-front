@@ -27,24 +27,29 @@
 </script>
 
 <template>
-  <AppForm
-    :closable="false"
-    :loading="loadingForm"
-    :title="config.public['NOM']"
-    width="30%"
-    @validate="handleConnect"
-  >
-    <FormCredentials
-      v-model="credentials"
-      :pending="authStore.pending"
-      :error="authStore.error"
-      :default-users="defaultProfils"
-    />
-    <template #actions="{validate, loading}">
-      <AuthLoginBtn
-        :loading="loading"
-        @click="validate"
-      />
-    </template>
-  </AppForm>
+  <VCard width="30%">
+    <AppForm
+      :closable="false"
+      :loading="loadingForm"
+      :title="config.public['NOM']"
+      @validate="handleConnect"
+    >
+      <VCardText>
+        <FormCredentials
+          v-model="credentials"
+          :pending="authStore.pending"
+          :error="authStore.error"
+          :default-users="defaultProfils"
+        />
+      </VCardText>
+      <template #actions="{validate, loading}">
+        <VCardActions>
+          <AuthLoginBtn
+            :loading="loading"
+            @click="validate"
+          />
+        </VCardActions>
+      </template>
+    </AppForm>
+  </VCard>
 </template>
