@@ -40,7 +40,7 @@
 
   /**  REQUETES  **/
 
-  const {data: responsePersonnes} = useFetchService<PaginedQuery<PersonneDto>>(
+  const {data: getPersonnes} = useFetchService<PaginedQuery<PersonneDto>>(
     API.personne,
     {
       method: METHODE_HTTP.GET,
@@ -51,7 +51,15 @@
     return {['filter.personne.id']: `$eq:${form.value.personne}`}
   })
 
-  const {data: responseRelations, refresh} = useFetchService<
+  const {data: getRelationCreate, refresh: refreshCreate} = useFetchService<
+    PaginedQuery<PersonneDto>
+  >(API.relation, {
+    method: METHODE_HTTP.POST,
+    body: form,
+    immediate: false,
+  })
+
+  const {data: getRelations, refresh: refreshRelations} = useFetchService<
     PaginedQuery<PersonneDto>
   >(API.relation, {
     method: METHODE_HTTP.GET,
@@ -59,10 +67,20 @@
     immediate: false,
   })
 
+  watch(getRelationCreate, () => {
+    console.log(getRelationCreate)
+  })
+
   /**  COMPUTED   **/
 
   const personnes = computed(() => {
-    return responsePersonnes.value?.data ?? []
+    return getPersonnes.value?.data ?? []
+  })
+
+  const relatedPersonnes = computed(() => {
+    return (
+      getPersonnes.value?.data.filter((e) => e.id !== form.value.personne) ?? []
+    )
   })
 
   const relations = computed(() => {
@@ -70,19 +88,24 @@
   })
 
   const relationsPersonne = computed(() => {
-    return responseRelations.value?.data ?? []
+    return getRelations.value?.data ?? []
   })
 
-  watch(form.value, () => {
-    if (form.value.personne) {
-      refresh()
-    }
+  const idPersonne = computed(() => {
+    return form.value.personne
+  })
+
+  /**  LIFE CYCLE   **/
+
+  watch(idPersonne, () => {
+    refreshRelations()
   })
 
   /**  METHODS  **/
 
-  function addRelation() {
-    console.log(form.value)
+  async function addRelation() {
+    await refreshCreate()
+    await refreshRelations()
   }
 
   function getLibelleRelationByGenre(genre?: Genre) {
@@ -191,7 +214,7 @@
           <VSelect
             v-model="form.relatedPersonne"
             label="Personne 2"
-            :items="personnes"
+            :items="relatedPersonnes"
             :item-props="itemsPropsPersonne"
             item-value="id"
           />
