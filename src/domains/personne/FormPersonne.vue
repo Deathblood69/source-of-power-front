@@ -40,6 +40,7 @@
     v-model="form.dateNaissance"
     label="Date de naissance"
     type="date"
+    :rules="[FORM_VALIDATIONS_RULES.required]"
   />
   <VSelect
     v-model="form.genre"
@@ -51,6 +52,7 @@
   <VSelect
     v-model="form.famille"
     :items="familles"
+    :rules="[FORM_VALIDATIONS_RULES.required]"
     item-title="nom"
     item-value="id"
     :return-object="false"

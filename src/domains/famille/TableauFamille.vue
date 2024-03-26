@@ -41,6 +41,12 @@
       align: 'start',
       sortable: true,
     },
+    {
+      title: 'Membres',
+      key: 'membres',
+      align: 'start',
+      sortable: true,
+    },
   ])
 
   const famille = ref<FamilleDto>()
@@ -116,6 +122,9 @@
       :page="query.page"
       :refresh="handleRefresh"
     >
+      <template #membres="{item}">
+        {{ item.membres.length }}
+      </template>
       <template #actions="{item}">
         <VBtn
           icon="mdi-pencil"
