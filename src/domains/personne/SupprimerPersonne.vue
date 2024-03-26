@@ -59,7 +59,7 @@
       @validate="handleValidate"
       @cancel="handleDialog"
     >
-      {{ `Voulez vous supprimer la famille ${personne.nom}?` }}
+      {{ `Voulez vous supprimer ${personne.nom} ${personne.prenom}?` }}
     </AppForm>
   </AppDialog>
 </template>

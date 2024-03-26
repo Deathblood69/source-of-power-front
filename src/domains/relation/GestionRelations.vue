@@ -6,16 +6,13 @@
   import type {PersonneDto} from '~/domains/personne/dto/personnage.dto'
   import {TypeRelation} from '~/domains/relation/enum/typeRelation.enum'
   import type {ReadonlyHeaders} from '~/types/headers'
-  import {Genre} from '~/domains/personne/enum/genre.enum'
   import type {RelationDto} from '~/domains/relation/dto/relation.dto'
+  import {DEFAUT_RELATION} from '~/domains/relation/constants/defautRelation.const'
+  import {preparerLibelleRelation} from '~/domains/relation/utils/getLibelleRelationByGenre'
 
   /**  REFS  **/
 
-  const form = ref<RelationDto>({
-    personne: '',
-    type: '',
-    relatedPersonne: '',
-  })
+  const form = ref<RelationDto>({...DEFAUT_RELATION})
 
   const headers = ref<ReadonlyHeaders>([
     {
@@ -40,23 +37,18 @@
 
   /**  REQUETES  **/
 
-  const {data: getPersonnes} = useFetchService<PaginedQuery<PersonneDto>>(
-    API.personne,
-    {
-      method: METHODE_HTTP.GET,
-    },
-  )
+  // Récupération de la liste des personnes
+
+  const {data: getPersonnes, refresh: refreshPersonne} = useFetchService<
+    PaginedQuery<PersonneDto>
+  >(API.personne, {
+    method: METHODE_HTTP.GET,
+  })
+
+  // Récupération des relations d'une personne
 
   const queryRelations = computed(() => {
     return {['filter.personne.id']: `$eq:${form.value.personne}`}
-  })
-
-  const {data: getRelationCreate, refresh: refreshCreate} = useFetchService<
-    PaginedQuery<PersonneDto>
-  >(API.relation, {
-    method: METHODE_HTTP.POST,
-    body: form,
-    immediate: false,
   })
 
   const {data: getRelations, refresh: refreshRelations} = useFetchService<
@@ -67,24 +59,31 @@
     immediate: false,
   })
 
-  watch(getRelationCreate, () => {
-    console.log(getRelationCreate)
-  })
+  // Création d'une relation
+
+  const {refresh: refreshCreate} = useFetchService<PaginedQuery<PersonneDto>>(
+    API.relation,
+    {
+      method: METHODE_HTTP.POST,
+      body: form,
+      immediate: false,
+    },
+  )
 
   /**  COMPUTED   **/
 
   const personnes = computed(() => {
-    return getPersonnes.value?.data ?? []
+    return (
+      getPersonnes.value?.data.filter(
+        (e) => e.id !== form.value.relatedPersonne,
+      ) ?? []
+    )
   })
 
   const relatedPersonnes = computed(() => {
     return (
       getPersonnes.value?.data.filter((e) => e.id !== form.value.personne) ?? []
     )
-  })
-
-  const relations = computed(() => {
-    return Object.values(TypeRelation)
   })
 
   const relationsPersonne = computed(() => {
@@ -98,7 +97,9 @@
   /**  LIFE CYCLE   **/
 
   watch(idPersonne, () => {
-    refreshRelations()
+    if (idPersonne.value) {
+      refreshRelations()
+    }
   })
 
   /**  METHODS  **/
@@ -108,55 +109,9 @@
     await refreshRelations()
   }
 
-  function getLibelleRelationByGenre(genre?: Genre) {
-    const libelle = {
-      parent: '',
-      enfant: '',
-      mariage: '',
-      divorce: '',
-    }
-    switch (genre) {
-      case Genre.HOMME:
-        libelle.parent = 'Père de'
-        libelle.enfant = 'Fils de'
-        libelle.mariage = 'Marié à'
-        libelle.divorce = 'Divorcé de'
-        break
-      case Genre.FEMME:
-        libelle.parent = 'Mere de'
-        libelle.enfant = 'Fille de'
-        libelle.mariage = 'Mariée à'
-        libelle.divorce = 'Divorcée de'
-        break
-      default:
-        libelle.parent = 'Parent de'
-        libelle.enfant = 'Enfant de'
-        libelle.mariage = 'Marié à'
-        libelle.divorce = 'Divorcé de'
-        break
-    }
-    return libelle
-  }
-
-  function preparerLibelleRelation(relation: TypeRelation, personneId: string) {
-    const personne = personnes.value.find((item) => item.id === personneId)
-    const typesRelations = getLibelleRelationByGenre(personne?.genre)
-
-    let libelle = ''
-    switch (relation) {
-      case TypeRelation.PARENT:
-        libelle = typesRelations.parent
-        break
-      case TypeRelation.ENFANT:
-        libelle = typesRelations.enfant
-        break
-      case TypeRelation.MARIAGE:
-        libelle = typesRelations.mariage
-        break
-      case TypeRelation.DIVORCE:
-        libelle = typesRelations.divorce
-    }
-    return libelle
+  async function resetForm() {
+    form.value = {...DEFAUT_RELATION}
+    await refreshPersonne()
   }
 
   function itemsPropsPersonne(item: PersonneDto) {
@@ -170,7 +125,7 @@
 
   function itemPropsRelation(relation: TypeRelation, personneId: string) {
     return {
-      title: preparerLibelleRelation(relation, personneId),
+      title: preparerLibelleRelation(personnes.value, relation, personneId),
       subtitle: '',
     }
   }
@@ -182,7 +137,7 @@
     <VContainer>
       <VRow
         no-gutters
-        class="personnes"
+        class="gap"
       >
         <VCol
           cols="12"
@@ -203,7 +158,7 @@
           <VSelect
             v-model="form.type as TypeRelation"
             label="Relation"
-            :items="relations"
+            :items="Object.values(TypeRelation)"
             :item-props="(item) => itemPropsRelation(item, form.personne)"
           />
         </VCol>
@@ -222,10 +177,20 @@
         <VCol
           cols="12"
           sm="2"
+          style="
+            display: flex;
+            flex-direction: row;
+            gap: 1em;
+            justify-content: center;
+          "
         >
           <VBtn
             text="Ajouter"
             @click="addRelation"
+          />
+          <VBtn
+            text="Reset"
+            @click="resetForm"
           />
         </VCol>
       </VRow>
@@ -242,10 +207,9 @@
   .container {
     display: flex;
     flex-direction: column;
-    gap: 1em;
   }
 
-  .personnes {
+  .gap {
     gap: 1em;
   }
 </style>
