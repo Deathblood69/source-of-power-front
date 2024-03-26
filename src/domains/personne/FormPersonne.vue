@@ -6,6 +6,7 @@
   import type {FamilleDto} from '~/domains/famille/dto/famille.dto'
   import {API} from '~/constants/api.const'
   import {METHODE_HTTP} from '~/constants/methodeHTTP.enum'
+  import SelectFamille from '~/domains/famille/SelectFamille.vue'
 
   const {data: response} = useFetchService<PaginedQuery<FamilleDto>>(
     API.famille,
@@ -49,14 +50,8 @@
     aria-label="Genre"
     label="Genre"
   />
-  <VSelect
+  <SelectFamille
     v-model="form.famille"
-    :items="familles"
-    :rules="[FORM_VALIDATIONS_RULES.required]"
-    item-title="nom"
-    item-value="id"
-    :return-object="false"
-    aria-label="Famille"
-    label="Famille"
+    :familles="familles"
   />
 </template>

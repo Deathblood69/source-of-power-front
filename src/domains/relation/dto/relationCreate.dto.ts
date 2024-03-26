@@ -1,8 +1,8 @@
 import type {AbstractDTO} from '~/domains/dto.abstract'
 import type {PersonneDto} from '~/domains/personne/dto/personnage.dto'
 
-export interface RelationDto extends AbstractDTO {
-  personne: PersonneDto
+export interface RelationCreateDto extends AbstractDTO {
+  personne: string
   type: string
-  relatedPersonne: PersonneDto
+  relatedPersonne: string
 }

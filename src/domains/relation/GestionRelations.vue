@@ -6,13 +6,13 @@
   import type {PersonneDto} from '~/domains/personne/dto/personnage.dto'
   import {TypeRelation} from '~/domains/relation/enum/typeRelation.enum'
   import type {ReadonlyHeaders} from '~/types/headers'
-  import type {RelationDto} from '~/domains/relation/dto/relation.dto'
   import {DEFAUT_RELATION} from '~/domains/relation/constants/defautRelation.const'
   import {preparerLibelleRelation} from '~/domains/relation/utils/getLibelleRelationByGenre'
+  import type {RelationCreateDto} from '~/domains/relation/dto/relationCreate.dto'
 
   /**  REFS  **/
 
-  const form = ref<RelationDto>({...DEFAUT_RELATION})
+  const form = ref<RelationCreateDto>({...DEFAUT_RELATION})
 
   const headers = ref<ReadonlyHeaders>([
     {

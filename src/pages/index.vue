@@ -10,6 +10,9 @@
   /**  LIFECYCLE  **/
 
   /**  METHODS  **/
+  import ArbreGenealogique from '~/domains/famille/ArbreFamille.vue'
 </script>
 
-<template>Accueil</template>
+<template>
+  <ArbreGenealogique />
+</template>
