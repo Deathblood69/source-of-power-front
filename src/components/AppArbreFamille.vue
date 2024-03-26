@@ -18,7 +18,7 @@
 
   /**  REFS  **/
 
-  const familyTree = ref<FamilyTree>()
+  const familyTree = ref<FamilyTree | null>(null)
 
   /**  COMPUTED   **/
 
@@ -26,21 +26,28 @@
 
   onMounted(() => {
     console.log(famille.value)
-    const element = document.getElementById('tree') ?? ''
-    familyTree.value = new FamilyTree(element, {
-      mode: themeStore.theme,
-      nodeBinding: {
-        field_0: 'nom',
-        field_1: 'prenom',
-      },
-    })
-  })
-
-  watch(famille.value, () => {
-    if (familyTree.value && famille.value) {
-      familyTree.value?.load(famille.value)
+    const element = document.getElementById('tree')
+    if (element) {
+      familyTree.value = new FamilyTree(element, {
+        mode: themeStore.theme,
+        nodeBinding: {
+          field_0: 'nom',
+          field_1: 'prenom',
+        },
+      })
+      loadFamilyTree()
     }
   })
+
+  watchEffect(() => {
+    loadFamilyTree()
+  })
+
+  function loadFamilyTree() {
+    if (familyTree.value && famille.value) {
+      familyTree.value.load(famille.value)
+    }
+  }
 
   /**  METHODS  **/
 </script>
