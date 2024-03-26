@@ -1,5 +1,7 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+  import GestionRelations from '~/domains/relation/GestionRelations.vue'
+</script>
 
 <template>
-  <div>Relations</div>
+  <GestionRelations />
 </template>
