@@ -77,13 +77,7 @@
       v-model="familleId"
       :familles="items"
     />
-    <pre>
-      {{ selectedFamille }}
-    </pre>
-    <AppArbreFamille
-      v-if="selectedFamille"
-      v-model="selectedFamille"
-    />
+    <AppArbreFamille v-model="selectedFamille" />
   </VContainer>
 </template>
 

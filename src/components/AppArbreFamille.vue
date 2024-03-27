@@ -18,14 +18,15 @@
 
   /**  REFS  **/
 
-  const familyTree = ref<FamilyTree | null>(null)
+  const familyTree = ref<FamilyTree | null>()
+
+  const nodes = ref<Object[]>([])
 
   /**  COMPUTED   **/
 
   /**  LIFECYCLE  **/
 
   onMounted(() => {
-    console.log(famille.value)
     const element = document.getElementById('tree')
     if (element) {
       familyTree.value = new FamilyTree(element, {
@@ -44,8 +45,22 @@
   })
 
   function loadFamilyTree() {
-    if (familyTree.value && famille.value) {
-      familyTree.value.load(famille.value)
+    nodes.value = famille.value
+
+    const element = document.getElementById('tree')
+    // Vérifier si le graphe a déjà été initialisé
+    if (!familyTree.value && element) {
+      // Créer le graphe avec les nouveaux nœuds
+      familyTree.value = new FamilyTree(element, {
+        nodes: nodes.value,
+        nodeBinding: {
+          field_0: 'nom',
+          field_1: 'prenom',
+        },
+      })
+    } else {
+      // Mettre à jour le graphe avec les nouveaux nœuds
+      familyTree.value?.load(nodes.value)
     }
   }
 
